@@ -198,7 +198,7 @@ From the `examples/csharp/helloworld` directory:
 **Windows**
 
 ```
-$ packages/Grpc.Tools.1.0.0/tools/windows_x86/protoc -I../../protos --csharp_out Greeter --grpc_out Greeter ../../protos/helloworld.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.1.0.0/tools/windows_x86/grpc_csharp_plugin
+> packages/Grpc.Tools.1.0.0/tools/windows_x86/protoc -I../../protos --csharp_out Greeter --grpc_out Greeter ../../protos/helloworld.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.1.0.0/tools/windows_x86/grpc_csharp_plugin.exe
 ```
 
 **Linux (or OS X by using macosx_x64 directory)**
@@ -262,8 +262,8 @@ public static void Main(string[] args)
     var reply = client.SayHello(new HelloRequest { Name = user });
     Console.WriteLine("Greeting: " + reply.Message);
     
-    var reply = client.SayHelloAgain(new HelloRequest { Name = user });
-    Console.WriteLine("Greeting: " + reply.Message);
+    var secondReply = client.SayHelloAgain(new HelloRequest { Name = user });
+    Console.WriteLine("Greeting: " + secondReply.Message);
 
     channel.ShutdownAsync().Wait();
     Console.WriteLine("Press any key to exit...");
