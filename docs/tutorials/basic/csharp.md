@@ -383,7 +383,15 @@ using (var call = client.RouteChat())
 
 Build client and server:
 
-- Open the solution `examples/csharp/route_guide/RouteGuide.sln` from Visual Studio (or Monodevelop on Linux) and select **Build**.
+### Using Visual Studio
+
+- Open the solution `examples/csharp/route_guide/RouteGuide.sln` and select **Build**.
+
+### Using Xamarin Studio or Monodevelop on OS X or Linux
+
+- See the [quickstart] for information about downloading nuget dependencies and building the solution.
+
+### Running the example
 
 - Run the server, which will listen on port 50052:
 
@@ -402,3 +410,5 @@ Build client and server:
 You can also run the server and client directly from Visual Studio.
 
 On Linux or Mac, use `mono RouteGuideServer.exe` and `mono RouteGuideClient.exe` to run the server and client.
+
+[quickstart]:../../quickstart/csharp.md
