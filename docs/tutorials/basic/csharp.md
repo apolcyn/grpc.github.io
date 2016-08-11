@@ -1,10 +1,10 @@
 ---
-bodyclass: docs
 layout: docs
-headline: gRPC Basics - C#
-sidenav: doc-side-tutorial-nav.html
-type: markdown
+title: gRPC Basics - C#
 ---
+
+<h1 class="page-header">gRPC Basics: C#</h1>
+
 <p class="lead">This tutorial provides a basic C# programmer's introduction to working with gRPC.</p>
 
 
@@ -31,7 +31,7 @@ With gRPC we can define our service once in a .proto file and implement clients 
 The example code for our tutorial is in [grpc/grpc/examples/csharp/route_guide](https://github.com/grpc/grpc/tree/{{ site.data.config.grpc_release_branch }}/examples/csharp/route_guide). To download the example, clone the `grpc` repository by running the following command:
 
 ```sh
-$ git clone -b {{ site.data.config.grpc_release_branch }} https://github.com/grpc/grpc
+$ git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc
 ```
 
 All the files for this tutorial are in the directory  `examples/csharp/route_guide`.
@@ -55,34 +55,34 @@ Then you define `rpc` methods inside your service definition, specifying their r
 - A *simple RPC* where the client sends a request to the server using the client object and waits for a response to come back, just like a normal function call.
 
 ```protobuf
-// Obtains the feature at a given position.
-rpc GetFeature(Point) returns (Feature) {}
+   // Obtains the feature at a given position.
+   rpc GetFeature(Point) returns (Feature) {}
 ```
 
 - A *server-side streaming RPC* where the client sends a request to the server and gets a stream to read a sequence of messages back. The client reads from the returned stream until there are no more messages. As you can see in our example, you specify a server-side streaming method by placing the `stream` keyword before the *response* type.
 
 ```protobuf
-// Obtains the Features available within the given Rectangle.  Results are
-// streamed rather than returned at once (e.g. in a response message with a
-// repeated field), as the rectangle may cover a large area and contain a
-// huge number of features.
-rpc ListFeatures(Rectangle) returns (stream Feature) {}
+  // Obtains the Features available within the given Rectangle.  Results are
+  // streamed rather than returned at once (e.g. in a response message with a
+  // repeated field), as the rectangle may cover a large area and contain a
+  // huge number of features.
+  rpc ListFeatures(Rectangle) returns (stream Feature) {}
 ```
 
 - A *client-side streaming RPC* where the client writes a sequence of messages and sends them to the server, again using a provided stream. Once the client has finished writing the messages, it waits for the server to read them all and return its response. You specify a server-side streaming method by placing the `stream` keyword before the *request* type.
 
 ```protobuf
-// Accepts a stream of Points on a route being traversed, returning a
-// RouteSummary when traversal is completed.
-rpc RecordRoute(stream Point) returns (RouteSummary) {}
+  // Accepts a stream of Points on a route being traversed, returning a
+  // RouteSummary when traversal is completed.
+  rpc RecordRoute(stream Point) returns (RouteSummary) {}
 ```
 
 - A *bidirectional streaming RPC* where both sides send a sequence of messages using a read-write stream. The two streams operate independently, so clients and servers can read and write in whatever order they like: for example, the server could wait to receive all the client messages before writing its responses, or it could alternately read a message then write a message, or some other combination of reads and writes. The order of messages in each stream is preserved. You specify this type of method by placing the `stream` keyword before both the request and the response.
 
 ```protobuf
-// Accepts a stream of RouteNotes sent while a route is being traversed,
-// while receiving other RouteNotes (e.g. from other users).
-rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
+  // Accepts a stream of RouteNotes sent while a route is being traversed,
+  // while receiving other RouteNotes (e.g. from other users).
+  rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
 ```
 
 Our .proto file also contains protocol buffer message type definitions for all the request and response types used in our service methods - for example, here's the `Point` message type:
@@ -112,7 +112,7 @@ To generate the code, the following command should be run from the `examples/csh
 - Windows
 
   ```
-  > packages\Grpc.Tools.0.14.0\tools\windows_x86\protoc.exe -I../../protos --csharp_out RouteGuide --grpc_out RouteGuide ../../protos/route_guide.proto --plugin=protoc-gen-grpc=packages\Grpc.Tools.0.14.0\tools\windows_x86\grpc_csharp_plugin.exe
+  > packages\Grpc.Tools.0.14.0\tools\windows_x86\protoc.exe -I../../protos --csharp_out RouteGuide --grpc_out RouteGuide ../../protos/route_guide.proto --plugin=protoc-gen-grpc=packages\Grpc.Tools.0.14.0\tools\windows_x86\grpc_csharp_plugin.exe 
   ```
 
 - Linux (or Mac OS X by using `macosx_x64` directory).
@@ -383,7 +383,15 @@ using (var call = client.RouteChat())
 
 Build client and server:
 
-- Open the solution `examples/csharp/route_guide/RouteGuide.sln` from Visual Studio (or Monodevelop on Linux) and select **Build**.
+### Using Visual Studio
+
+- Open the solution `examples/csharp/route_guide/RouteGuide.sln` and select **Build**.
+
+### Using Xamarin Studio or Monodevelop on OS X or Linux
+
+- See the [quickstart] for information about downloading nuget dependencies and building the solution.
+
+### Running the example
 
 - Run the server, which will listen on port 50052:
 
@@ -402,3 +410,5 @@ Build client and server:
 You can also run the server and client directly from Visual Studio.
 
 On Linux or Mac, use `mono RouteGuideServer.exe` and `mono RouteGuideClient.exe` to run the server and client.
+
+[quickstart]:../../quickstart/csharp.md
